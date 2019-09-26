@@ -11,10 +11,11 @@ class doc_utilities:
     def read_data_set(self, file=''):
         if len(file) == 0: self.logger.error("file parameter missing")
         #collection = pickle.load(open("{}".format(file), "rb"))
-        collection = pd.read_csv(filepath_or_buffer=file)
+        collection = pd.read_csv(filepath_or_buffer=file, encoding='latin')
         self.collection = collection.rename(columns={"content": "text",
                                                      "title": "title",
                                                      "id": "id"})
+        print(self.collection[0:2])
 
     # this is an abstraction layer, this could be changed to a db query, however the main
     # caller won't notice that, as long as the method name and parameters are the same.

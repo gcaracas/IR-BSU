@@ -9,7 +9,7 @@ import pandas as pd
 
 logging.basicConfig(level=logging.DEBUG, format='%(filename)s %(levelname)s: %(asctime)s: %(message)s')
 logger = logging.getLogger('main')
-max_unique_words_index = 100000
+max_unique_words_index = 500000
 
 def main():
     logger.info('Executing indexing module')
@@ -38,7 +38,7 @@ def main():
 
     # Let's transform our collection as an array of
     # JSON elements.
-    u.process_documents_for_indexing()
+    #u.process_documents_for_indexing()
 
     # Now let's create our index
     i_i.create_index(collection=u.get_collection_json(),

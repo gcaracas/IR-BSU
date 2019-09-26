@@ -1,5 +1,6 @@
 import numpy as np
 import logging
+import matplotlib.pyplot as plt
 
 from classes.preprocessing import preprocessing
 
@@ -31,6 +32,9 @@ class inverted_index:
         # Let's initialize our own preprocessing module
         self.preprocessing = preprocessing()
         self.preprocessing = preprocessing()
+        # to visualize heaps law
+        self.docs=[]
+        self.unique_words=[]
         self.logger.info('Instantiating inverted index object')
 
     def __repr__(self):
@@ -176,3 +180,27 @@ class inverted_index:
         self.numeric_term_term = np.matmul(self.numeric_term_doc, self.numeric_term_doc.transpose())
         for row in self.numeric_term_term:
             print(row)
+
+    def create_index(self, collection=[],
+                     preprocessing_text=False,
+                     max_unique_words=0):
+        for i, doc in enumerate(collection):
+            self.index_document(document=doc,
+                               preprocessing=False)
+            total_unique_words_sofar = self.get_index_size()
+            percentage = (total_unique_words_sofar / max_unique_words) * 100
+            self.logger.debug('Doc indexed so far = %{}'.format(percentage))
+            self.docs.append(i)
+            self.unique_words.append(total_unique_words_sofar)
+            if total_unique_words_sofar >= max_unique_words:
+                self.logger.info('Max unique words reached, exiting.')
+                break;
+
+    def visualize_freq(self):
+        plt.figure(figsize=(6, 4), dpi=70)
+        plt.loglog(self.docs, self.unique_words, marker=".")
+        plt.title("Docs/Unique tokens")
+        plt.xlabel("Documents")
+        plt.ylabel("Unique words")
+        plt.grid(True)
+        plt.savefig('fig.png')

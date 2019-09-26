@@ -10,7 +10,8 @@ class doc_utilities:
 
     def read_data_set(self, file=''):
         if len(file) == 0: self.logger.error("file parameter missing")
-        collection = pickle.load(open("{}".format(file), "rb"))
+        #collection = pickle.load(open("{}".format(file), "rb"))
+        collection = pd.read_csv(filepath_or_buffer=file)
         self.collection = collection.rename(columns={"content": "text",
                                                      "title": "title",
                                                      "id": "id"})
@@ -23,6 +24,6 @@ class doc_utilities:
     def process_documents_for_indexing(self):
         self.logger.info('Converting document to be ready to be indexed')
         self.json_collection=self.collection.to_dict('records')
-
+        self.logger.debug('Documents in collection is {}'.format(self.json_collection[0]))
     def get_collection_json(self):
         return self.json_collection

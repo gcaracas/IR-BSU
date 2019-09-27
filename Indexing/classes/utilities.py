@@ -15,7 +15,6 @@ class doc_utilities:
         self.collection = collection.rename(columns={"content": "text",
                                                      "title": "title",
                                                      "id": "id"})
-        print(self.collection[0:2])
 
     # this is an abstraction layer, this could be changed to a db query, however the main
     # caller won't notice that, as long as the method name and parameters are the same.

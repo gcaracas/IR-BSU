@@ -189,14 +189,6 @@ class inverted_index:
         for i, doc in enumerate(collection):
             self.index_document(document=doc,
                                preprocessing=False)
-            total_unique_words_sofar = self.get_index_size()
-            percentage = (total_unique_words_sofar / max_unique_words) * 100
-            self.logger.debug('Doc indexed so far = %{}'.format(percentage))
-            self.docs.append(i)
-            self.unique_words.append(total_unique_words_sofar)
-            #if total_unique_words_sofar >= max_unique_words:
-            #    self.logger.info('Max unique words reached, exiting.')
-            #    break;
 
     def visualize_freq(self):
         plt.figure(figsize=(6, 4), dpi=70)

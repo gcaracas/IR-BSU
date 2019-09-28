@@ -8,10 +8,13 @@ class doc_utilities:
         self.logger = logging.getLogger('utils')
         self.collection = ''
 
-    def read_data_set(self, file=''):
+    def read_data_set(self, file='', docs=0):
         if len(file) == 0: self.logger.error("file parameter missing")
         #collection = pickle.load(open("{}".format(file), "rb"))
         collection = pd.read_csv(filepath_or_buffer=file, encoding='latin')
+        if docs > 0:
+            collection = collection.head(docs)
+            self.logger.info('Getting {} docs'.format(docs))
         self.collection = collection.rename(columns={"content": "text",
                                                      "title": "title",
                                                      "id": "id"})

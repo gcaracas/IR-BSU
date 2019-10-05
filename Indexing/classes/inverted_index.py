@@ -43,21 +43,19 @@ class inverted_index:
         """
         return str(self.index)
 
-    def index_document(self, document='', preprocessing=True):
+    def index_document(self, document='', process_text=True):
         """
         Process a given document, save it to the DB and update the index.
         """
-        print(type(document))
-        print(document.keys())
         # Remove punctuation from the text.
         text = document['text']
-        if preprocessing:
+        if process_text:
             text = self.preprocessing.remove_punctuation(text=text)
 
         # Tokenize
         tokens = self.preprocessing.tokenize(text=text)
 
-        if preprocessing:
+        if process_text:
             # Remove stop words
             tokens = self.preprocessing.remove_stopwords(tokens=tokens)
 
@@ -183,12 +181,11 @@ class inverted_index:
             print(row)
 
     def create_index(self, collection=[],
-                     preprocessing_text=False,
-                     max_unique_words=0):
-        self.logger.debug('Collection = {}'.format(len(collection)))
+                     process_text=False):
+        self.logger.debug('Collection length = {}'.format(len(collection)))
         for i, doc in enumerate(collection):
             self.index_document(document=doc,
-                               preprocessing=False)
+                               process_text=process_text)
 
     def visualize_freq(self):
         plt.figure(figsize=(6, 4), dpi=70)

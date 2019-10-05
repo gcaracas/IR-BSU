@@ -1,3 +1,4 @@
+import nltk
 from nltk.stem import PorterStemmer
 from nltk.tokenize import TreebankWordTokenizer
 from nltk.tokenize import TweetTokenizer
@@ -8,6 +9,7 @@ import logging
 
 class preprocessing:
     def __init__(self):
+        nltk.download('stopwords')
         logging.basicConfig(level=logging.INFO, format='%(filename)s %(levelname)s: %(asctime)s: %(message)s')
         self.logger = logging.getLogger('utils')
         self.stemer = PorterStemmer()

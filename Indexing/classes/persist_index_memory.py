@@ -6,6 +6,7 @@ class persist_index_memory:
         self.logger = logging.getLogger('utils')
         self.index = {}
         self.logger.info('Instantiating storage object')
+        self.max_frequency_terms_per_doc = []
     def __repr__(self):
         """
         String representation of the Database object

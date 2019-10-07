@@ -1,6 +1,7 @@
 import numpy as np
 import logging
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 from classes.preprocessing import preprocessing
 
@@ -48,7 +49,7 @@ class inverted_index:
         Process a given document, save it to the DB and update the index.
         """
         # Remove punctuation from the text.
-        text = document['text']
+        text = document['content']
         if process_text:
             text = self.preprocessing.remove_punctuation(text=text)
 
@@ -110,7 +111,7 @@ class inverted_index:
         terms = list(self.index.keys())
         stemmed_tokens=[]
         for id, document in self.storage.index.items():
-            text = self.preprocessing.remove_punctuation(text=document['text'])
+            text = self.preprocessing.remove_punctuation(text=document['content'])
             tokens = self.preprocessing.tokenize(text=text)
             tokens = self.preprocessing.remove_stopwords(tokens=tokens)
             tokens = self.preprocessing.remove_capitalization(tokens=tokens)
@@ -183,7 +184,7 @@ class inverted_index:
     def create_index(self, collection=[],
                      process_text=False):
         self.logger.debug('Collection length = {}'.format(len(collection)))
-        for i, doc in enumerate(collection):
+        for i, doc in tqdm(enumerate(collection)):
             self.index_document(document=doc,
                                process_text=process_text)
 

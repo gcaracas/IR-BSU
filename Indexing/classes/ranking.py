@@ -4,6 +4,7 @@ import logging
 from classes.preprocessing import preprocessing
 import operator
 from classes.inverted_index import *
+from tqdm import tqdm
 
 
 class ranking:
@@ -40,8 +41,11 @@ class ranking:
         for key, val in index.items():
             # val is an array of docId, frequency objects
             # of the documents that key(term) occurs.
+            
+            # key is the docId
+            # val is the matching term and its freq in the doc
             for elem in val:
-                if int(elem.docId) == doc_id:
+                if key == doc_id: #if int(elem.docId) == doc_id:
                     if elem.frequency > tmp_freq:
                         tmp_freq = elem.frequency
         return tmp_freq
@@ -105,7 +109,18 @@ class ranking:
         term frequency.
         """
         max_freq=[]
-        for document_id in range(1,num_docs+1):
+        
+        for docId, matches in CR.items():
+            tmp_freq = 0
+            for token in matches:
+
+                frequency = token[1]
+                if frequency > tmp_freq:
+                    print(token[0])
+                    tmp_freq = frequency
+                    print(tmp_freq)
+        
+        for document_id in tqdm(range(1,num_docs+1)):
             max_freq.append(self.get_highest_frequency(index=index, doc_id=document_id))
 
         return max_freq

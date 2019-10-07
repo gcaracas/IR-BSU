@@ -110,16 +110,6 @@ class ranking:
         """
         max_freq=[]
         
-        for docId, matches in CR.items():
-            tmp_freq = 0
-            for token in matches:
-
-                frequency = token[1]
-                if frequency > tmp_freq:
-                    print(token[0])
-                    tmp_freq = frequency
-                    print(tmp_freq)
-        
         for document_id in tqdm(range(1,num_docs+1)):
             max_freq.append(self.get_highest_frequency(index=index, doc_id=document_id))
 

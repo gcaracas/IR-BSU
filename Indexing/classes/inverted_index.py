@@ -107,10 +107,10 @@ class inverted_index:
         """
         return {term: self.index[term] for term in query.split(' ') if term in self.index}
 
-    def create_term_document_matrix(self):
+    def create_term_document_matrix(self, relevant_results={}):
         terms = list(self.index.keys())
         stemmed_tokens=[]
-        for id, document in self.storage.index.items():
+        for id, document in relevant_results.items():
             text = self.preprocessing.remove_punctuation(text=document['content'])
             tokens = self.preprocessing.tokenize(text=text)
             tokens = self.preprocessing.remove_stopwords(tokens=tokens)

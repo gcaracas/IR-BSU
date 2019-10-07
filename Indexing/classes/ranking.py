@@ -99,7 +99,7 @@ class ranking:
         sorted_result = sorted(results.items(), key=operator.itemgetter(1), reverse = True)
         return sorted_result[:num_results]
 
-    def get_max_frequencies(self, index={}, num_docs=0):
+    def get_max_frequencies(self, index={}):
         """
         Calculates the maximum frequency of any term in all documents, so we
         can use it in ranking.
@@ -109,10 +109,14 @@ class ranking:
         term frequency.
         """
         max_freq=[]
-        
-        for document_id in tqdm(range(1,num_docs+1)):
-            max_freq.append(self.get_highest_frequency(index=index, doc_id=document_id))
-
+        for docId, matches in tqdm(index.items()):
+            tmp_freq = 0
+            for token in matches:
+                frequency = token[1]
+                if frequency > tmp_freq:
+                    tmp_freq = frequency
+            max_freq.append(tmp_freq)
+                
         return max_freq
 
 

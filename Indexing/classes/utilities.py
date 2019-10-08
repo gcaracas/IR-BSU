@@ -4,18 +4,18 @@ import pandas as pd
 
 class doc_utilities:
     def __init__(self):
-        logging.basicConfig(format='%(filename)s %(levelname)s: %(asctime)s: %(message)s')
-        self.logger = logging.getLogger('utils')
+  #      logging.basicConfig(format='%(filename)s %(levelname)s: %(asctime)s: %(message)s')
+ #       self.logger = logging.getLogger('utils')
         self.collection = ''
 
     def read_data_set(self, file='', docs=0):
-        if len(file) == 0: self.logger.error("file parameter missing")
+      #  if len(file) == 0: self.logger.error("file parameter missing")
         collection = pickle.load(open("{}".format(file), "rb"))
         #collection = pd.read_csv(filepath_or_buffer=file, encoding='latin')
         if docs > 0:
             collection = collection.head(docs)
-            self.logger.info('Getting {} docs'.format(docs))
-        self.collection = collection.rename(columns={"content": "text",
+#            self.logger.info('Getting {} docs'.format(docs))
+        self.collection = collection.rename(columns={"content": "content",
                                                      "title": "title",
                                                      "id": "id"})
 

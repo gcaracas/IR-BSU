@@ -79,18 +79,19 @@ class ranking:
         results={}
 
         # We will iterate through all the documents in the resources list
-        for id in resources:
+        for id, val in enumerate(resources):
             TF=0
             IDF=0
             #Iterate through query tokens
+            print('Id = ', id)
             for w in q:
                 if w not in index:
                     print('Term {} not found in index'.format(w))
                     continue
                 freq = self.get_term_frequency(entries=index[w], doc_id=id)
                 
-                # but what if not consecutive?!?!?!?1
-                max_d = max_freq[id-1] #For base 0 reason
+                # fixed merge conflict
+                max_d = max_freq[id] #For base 0 reason
                 # Now calculate TF
                 TF = TF+freq/max_d
                 # Now calculate IDF

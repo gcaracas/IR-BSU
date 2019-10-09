@@ -32,7 +32,6 @@ class inverted_index:
         self.storage = storage
         # Let's initialize our own preprocessing module
         self.preprocessing = preprocessing()
-        self.preprocessing = preprocessing()
         # to visualize heaps law
         self.docs=[]
         self.unique_words=[]
@@ -99,13 +98,14 @@ class inverted_index:
             freq_str = (str(d) for d in freq)
             freq_flat_list = ','.join(freq_str)
             print("{: >10} {: >10} {: >10} {: >10}".format(id,word,docs_flat_list, freq_flat_list))
+            
     def lookup_query(self, query):
         """
         Returns the dictionary of terms with their correspondent Appearances.
         This is a very naive search since it will just split the terms and show
         the documents where they appear.
         """
-        return {term: self.index[term] for term in query.split(' ') if term in self.index}
+        return {term: self.index[term] for term in query if term in self.index}
 
     def create_term_document_matrix(self, relevant_results={}):
         terms = list(self.index.keys())

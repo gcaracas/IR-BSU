@@ -5,13 +5,14 @@ from classes.preprocessing import preprocessing
 import operator
 from classes.inverted_index import *
 from tqdm import tqdm
-
+import collections
 
 class ranking:
     """
     Class to handle ranking operations.
     """
     def __init__(self):
+        self.preproc = preprocessing()
         pass
 
     def get_term_frequency(self, entries={}, doc_id=0):
@@ -58,8 +59,9 @@ class ranking:
             else:
                 continue
         return num_docs
-
-    def relevance_ranking(self, query='', num_results=5, index=[], resources=[], max_freq=[], N=0, term_doc_matrix=[]):
+    
+   
+    def relevance_ranking(self, query='', num_results=5, index=[], resources=[], max_freq=[], N=0, term_doc_matrix=[], weigh=False):
         """
         Calculate relevance ranking
         :param query: String containing the query, this is a single string and it is not tokenize
@@ -70,30 +72,28 @@ class ranking:
         logging.info("Performing ranking, query = {}, results = {}".format(query, num_results))
 
         # Now we will preprocess and tokenize our query.
-        p = preprocessing()
-        text = p.remove_punctuation(text=query)
-        tokens = p.tokenize(text=text)
-        tokens = p.stem(tokens=tokens)
-        tokens = p.remove_stopwords(tokens=tokens)
-        q = p.remove_capitalization(tokens=tokens)
+        p=self.preproc
+        q=p.the_works(text=query)
         results={}
 
+        if weigh: resources=q
+            
         # We will iterate through all the documents in the resources list
         for id, val in enumerate(resources):
             TF=0
             IDF=0
             #Iterate through query tokens
-            print('Id = ', id)
+#             print('Id = ', id, '-->', val)
             for w in q:
                 if w not in index:
                     print('Term {} not found in index'.format(w))
                     continue
                 freq = self.get_term_frequency(entries=index[w], doc_id=id)
                 
-                # fixed merge conflict
                 max_d = max_freq[id] #For base 0 reason
                 # Now calculate TF
-                TF = TF+freq/max_d
+                if max_d==0: TF=0
+                else: TF=TF+freq/max_d
                 # Now calculate IDF
                 n_w=self.n_w(term_doc_matrix=term_doc_matrix, term=w)
                 IDF = IDF+math.log2(N/n_w)
@@ -102,7 +102,7 @@ class ranking:
         sorted_result = sorted(results.items(), key=operator.itemgetter(1), reverse = True)
         return sorted_result[:num_results]
 
-    def get_max_frequencies(self, index={}):
+    def get_max_frequencies(self, index={}, sentence_tokens=[]):
         """
         Calculates the maximum frequency of any term in all documents, so we
         can use it in ranking.
@@ -111,15 +111,34 @@ class ranking:
         :return: array from 1..n where n is num of documents, with the highest
         term frequency.
         """
-        max_freq=[]
-        for docId, matches in tqdm(index.items()):
-            tmp_freq = 0
-            for token in matches:
-                frequency = token[1]
-                if frequency > tmp_freq:
-                    tmp_freq = frequency
-            max_freq.append(tmp_freq)
+        
+        if len(sentence_tokens) == 0:
+            max_freq=[]
+            for docId, matches in tqdm(index.items()):
+                tmp_freq = 0
+                for token in matches:
+                    frequency = token[1]
+                    if frequency > tmp_freq:
+                        tmp_freq = frequency
+                max_freq.append(tmp_freq)
+        else: 
+            max_freq=[]
+#             for sentence in sentences:
+            # sentence_freqs
+            for token in sentence_tokens:
+                max_frequency = 0
+                if token not in index:
+                    print('Term {} not found in index'.format(token))
+                    max_freq.append(max_frequency)
+                    continue
+                for a in index[token]:
+                    if a.frequency > max_frequency:
+                        max_frequency = a.frequency
+                max_freq.append(max_frequency)
+                #sentence_freqs.append(max_frequency)
+            # max_freq.append(sentence_freqs)
                 
+      
         return max_freq
 
 

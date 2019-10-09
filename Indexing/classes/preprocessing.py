@@ -30,3 +30,12 @@ class preprocessing:
 
     def remove_punctuation(self, text=''):
         return re.sub(r'[^\w\s]', '', text)
+    
+    def the_works(self, text=''):
+        text = self.remove_punctuation(text=text)
+        tokens = self.tokenize(text=text)
+        tokens = self.stem(tokens=tokens)
+        tokens = self.remove_stopwords(tokens=tokens)
+        tokens = self.remove_capitalization(tokens=tokens)
+        return tokens
+        

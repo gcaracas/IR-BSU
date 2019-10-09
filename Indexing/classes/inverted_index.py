@@ -131,7 +131,7 @@ class inverted_index:
         self.doc_term_matrix_all=[]
         for id, document in self.storage.index.items():
             term_doc_matrix=dict()
-            text = self.preprocessing.remove_punctuation(text=document['text'])
+            text = self.preprocessing.remove_punctuation(text=document['content'])
             tokens = self.preprocessing.tokenize(text=text)
             tokens = self.preprocessing.remove_stopwords(tokens=tokens)
             tokens = self.preprocessing.remove_capitalization(tokens=tokens)

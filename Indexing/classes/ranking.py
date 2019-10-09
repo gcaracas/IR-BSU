@@ -88,6 +88,8 @@ class ranking:
                     print('Term {} not found in index'.format(w))
                     continue
                 freq = self.get_term_frequency(entries=index[w], doc_id=id)
+                
+                # but what if not consecutive?!?!?!?1
                 max_d = max_freq[id-1] #For base 0 reason
                 # Now calculate TF
                 TF = TF+freq/max_d

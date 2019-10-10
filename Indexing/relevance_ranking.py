@@ -28,12 +28,15 @@ i_i.create_term_document_matrix()
 
 # GIVEN QUERY FROM FRONT-END, FIND RELEVANT RESULTS
 query = 'When is shark week?' # user input
-print('When is shark week?')
+print('input:',query)
 matcher = match()
 q = preprocessing().the_works(query)
 CR = i_i.lookup_query(q)
 CR = matcher.boolean(CR)
-CR = matcher.scale(CR,len(q))
+# added in case not every token matches
+doctoken_matchnums =[len(i) for i in CR.values()]
+scaler = max(doctoken_matchnums)
+CR = matcher.scale(CR,scaler)
 
 # RANK RELEVANT RESULTS
 r_ranking = ranking()
@@ -51,6 +54,6 @@ res = r_ranking.relevance_ranking(query = query,
 
 # GENERATE RANKED JSON_SNIPPETS FOR FRONT-END
 snipper = snip(r_ranking)
-json = snipper.get_snippets(res, resources, query, i_i=i_i)
+json = snipper.get_snippets(res, resources=resources, query=query, i_i=i_i)
 
-
+print('output:',json)

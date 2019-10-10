@@ -69,7 +69,7 @@ class ranking:
         :param resources: Array of document id's that will be processed
         :return: Array of ranked documents.
         """
-        logging.info("Performing ranking, query = {}, results = {}".format(query, num_results))
+       # logging.info("Performing ranking, query = {}, results = {}".format(query, num_results))
 
         # Now we will preprocess and tokenize our query.
         p=self.preproc

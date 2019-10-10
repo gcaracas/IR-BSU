@@ -15,10 +15,11 @@ class match:
     def __init__(self):
         pass
 
-    def scale(self, CR={}, match_num=int):
+    def scale(self, CR, match_num=int):
         """
         Change the number of exact terms to match between query and resource
-        """
+        """ 
+        scaled = {k: CR[k] for k in CR if len(CR[k]) == match_num}
         return {k: CR[k] for k in CR if len(CR[k]) == match_num}
     
     def boolean(self, CR):

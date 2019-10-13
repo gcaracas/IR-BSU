@@ -61,7 +61,7 @@ class ranking:
         return num_docs
     
    
-    def relevance_ranking(self, query='', num_results=5, index=[], resources=[], max_freq=[], N=0, term_doc_matrix=[], weigh=False):
+    def relevance_ranking(self, query='', num_results=5, index=[], resources=[], max_freq=[], N=0, term_doc_matrix=[], weigh=False, query_weighing=False):
         """
         Calculate relevance ranking
         :param query: String containing the query, this is a single string and it is not tokenize
@@ -88,7 +88,8 @@ class ranking:
                 if w not in index:
                     print('Term {} not found in index'.format(w))
                     continue
-                freq = self.get_term_frequency(entries=index[w], doc_id=id)
+                if not query_weighing: freq = self.get_term_frequency(entries=index[w], doc_id=id)
+                else: freq = query.count(w)
                 
                 max_d = max_freq[id] #For base 0 reason
                 # Now calculate TF

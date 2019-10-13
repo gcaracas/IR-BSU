@@ -69,15 +69,20 @@ class snip:
         :return: 
         """
         # derive weights for tokens in query
+        q = self.preproc.the_works(query)
+        q_max_freqs = self.ranker.get_max_frequencies(index=i_i.index, sentence_tokens=q)
+        i_i.storage.max_frequency_terms_per_doc = q_max_freqs
+        
         q_weights=self.ranker.relevance_ranking(query = query,
-                           num_results=len(self.preproc.the_works(query)),
+                           num_results=len(q),
                             index=i_i.index,
                             resources=[],
                             max_freq=i_i.storage.max_frequency_terms_per_doc,
                             N=len(i_i.storage.index),
                             term_doc_matrix=i_i.doc_term_matrix_all,
-                            weigh=True)   
-        q_w=ordered_q_weights = [w[1] for w in sorted(q_weights, key=lambda x: x[0])]
+                            weigh=True,
+                            query_weighing=True)   
+        q_w=[w[1] for w in sorted(q_weights, key=lambda x: x[0])]
             
         print('num results for q_weights', query)
         print('query weights generated', q_w)
@@ -96,7 +101,7 @@ class snip:
             s_weights = self.ranker.relevance_ranking(query = s,
                                    num_results=len(s),
                                     index=i_i.index,
-                                    resources=[],
+                                    resources=[], 
                                     max_freq=i_i.storage.max_frequency_terms_per_doc,
                                     N=len(i_i.storage.index),
                                     term_doc_matrix=i_i.doc_term_matrix_all,

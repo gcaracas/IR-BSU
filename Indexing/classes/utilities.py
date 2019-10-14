@@ -1,6 +1,7 @@
 import logging
 import pickle
 import pandas as pd
+import sys
 
 class doc_utilities:
     def __init__(self):
@@ -10,6 +11,7 @@ class doc_utilities:
 
     def read_data_set(self, file='', docs=0):
       #  if len(file) == 0: self.logger.error("file parameter missing")
+        print(sys.path)
         self.collection = pickle.load(open("{}".format(file), "rb"))
         #collection = pd.read_csv(filepath_or_buffer=file, encoding='latin')
         if docs > 0:

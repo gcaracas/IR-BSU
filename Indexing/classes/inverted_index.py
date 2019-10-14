@@ -1,9 +1,11 @@
 import numpy as np
 import logging
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-from classes.preprocessing import preprocessing
+from preprocessing import preprocessing
 
 class Appearance:
     """
@@ -98,7 +100,7 @@ class inverted_index:
             freq_str = (str(d) for d in freq)
             freq_flat_list = ','.join(freq_str)
             print("{: >10} {: >10} {: >10} {: >10}".format(id,word,docs_flat_list, freq_flat_list))
-            
+
     def lookup_query(self, query):
         """
         Returns the dictionary of terms with their correspondent Appearances.

@@ -1,9 +1,11 @@
 from collections import Counter
 import math
 import logging
-from classes.preprocessing import preprocessing
+import sys
+sys.path.insert(0, '/Users/jason.smith/Documents/GitHub/IR-BSU/Indexing/classes')
+from preprocessing import preprocessing
 import operator
-from classes.inverted_index import *
+from inverted_index import *
 from tqdm import tqdm
 import collections
 
@@ -42,7 +44,7 @@ class ranking:
         for key, val in index.items():
             # val is an array of docId, frequency objects
             # of the documents that key(term) occurs.
-            
+
             # key is the docId
             # val is the matching term and its freq in the doc
             for elem in val:
@@ -59,8 +61,8 @@ class ranking:
             else:
                 continue
         return num_docs
-    
-   
+
+
     def relevance_ranking(self, query='', num_results=5, index=[], resources=[], max_freq=[], N=0, term_doc_matrix=[], weigh=False, query_weighing=False):
         """
         Calculate relevance ranking
@@ -77,7 +79,7 @@ class ranking:
         results={}
 
         if weigh: resources=q
-            
+
         # We will iterate through all the documents in the resources list
         for id, val in enumerate(resources):
             TF=0
@@ -90,7 +92,7 @@ class ranking:
                     continue
                 if not query_weighing: freq = self.get_term_frequency(entries=index[w], doc_id=id)
                 else: freq = query.count(w)
-                
+
                 max_d = max_freq[id] #For base 0 reason
                 # Now calculate TF
                 if max_d==0: TF=0
@@ -112,7 +114,7 @@ class ranking:
         :return: array from 1..n where n is num of documents, with the highest
         term frequency.
         """
-        
+
         if len(sentence_tokens) == 0:
             max_freq=[]
             for docId, matches in tqdm(index.items()):
@@ -122,7 +124,7 @@ class ranking:
                     if frequency > tmp_freq:
                         tmp_freq = frequency
                 max_freq.append(tmp_freq)
-        else: 
+        else:
             max_freq=[]
 #             for sentence in sentences:
             # sentence_freqs
@@ -138,10 +140,6 @@ class ranking:
                 max_freq.append(max_frequency)
                 #sentence_freqs.append(max_frequency)
             # max_freq.append(sentence_freqs)
-                
-      
+
+
         return max_freq
-
-
-
-

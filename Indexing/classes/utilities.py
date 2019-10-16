@@ -13,7 +13,7 @@ class doc_utilities:
         self.collection = pickle.load(open("{}".format(file), "rb"))
         #collection = pd.read_csv(filepath_or_buffer=file, encoding='latin')
         if docs > 0:
-            collection = collection.head(docs)
+            collection = self.collection.head(docs)
 #            self.logger.info('Getting {} docs'.format(docs))
         #self.collection = collection.rename(columns={"content": "content",
         #                                             "title": "title",

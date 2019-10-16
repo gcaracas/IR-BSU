@@ -3,4 +3,7 @@ nltk
 tqdm
 matplotlib
 Whoosh
+flask
+fart
+
 

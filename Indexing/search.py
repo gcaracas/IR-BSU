@@ -1,33 +1,17 @@
 import logging
 import sys
-sys.path.insert(0, '/Users/jason.smith/Documents/GitHub/IR-BSU/Indexing/classes')
-from utilities import doc_utilities
-from persist_index_memory import persist_index_memory
-from inverted_index import inverted_index
+#sys.path.insert(0, '/Users/jason.smith/Documents/GitHub/IR-BSU/Indexing/classes')
+sys.path.append("../Indexing/classes")
 from ranking import ranking
 from preprocessing import preprocessing
 from snip import snip
 from match import match
-import nltk
 
-def search(query1):
+def search(query1, i_i):
     logging.basicConfig(level=logging.DEBUG, format='%(filename)s %(levelname)s: %(asctime)s: %(message)s')
     logger = logging.getLogger('main')
     logger.info('Executing indexing module')
     logger.info('Reading file')
-
-    # LOAD DATASET
-    u = doc_utilities()
-    u.read_data_set(file='/Users/jason.smith/Documents/GitHub/IR-BSU/Indexing/data/12000_docs.p')
-    memory_unit = persist_index_memory()
-    u.process_documents_for_indexing()
-    i_i = inverted_index(memory_unit)
-
-    # CREATE INDEX FROM DATASET
-    i_i.create_index(collection=u.get_collection_json(),
-                         process_text=True)
-    i_i.create_term_document_matrix()
-
     # GIVEN QUERY FROM FRONT-END, FIND RELEVANT RESULTS
     query =  query1# user input
     print('input:',query)
@@ -37,6 +21,7 @@ def search(query1):
     CR = matcher.boolean(CR)
     # added in case not every token matches
     doctoken_matchnums =[len(i) for i in CR.values()]
+    if len(doctoken_matchnums) == 0: return ''
     scaler = max(doctoken_matchnums)
     CR = matcher.scale(CR,scaler)
 

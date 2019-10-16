@@ -54,7 +54,7 @@ if __name__ == '__main__':
     qli = {}
     timeinf = {}
     totalQ= 3942354
-    # csv_loc = 'aql.csv'
+    csv_loc = 'aql.csv'
     # df = pd.read_csv(csv_loc, sep=',', header=0) #http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html
     # df.to_pickle("./aql.pkl")
     # df['query'] # would select a column called name
@@ -62,14 +62,17 @@ if __name__ == '__main__':
     # match = df['query'].str.contains('(^merit)')
     # print(df['query'][match].value_counts())
     # print(match)
-    df = pd.read_pickle("./aql.pkl")
-    ind = pd.DataFrame(columns=['token', 'id', 'count', 'time'])
+    # df = pd.read_pickle("./aql.pkl")
+    # ind = pd.DataFrame(columns=['token', 'id', 'count', 'time'])
+    # ind = dict.fromkeys('token', 'id', 'count', 'time')
+    ind = {}
     session = pd.DataFrame(columns=['sessionId', 'sessionLength'])
     # dfquery = df[df['query'].str.contains('(^merit)', na=False)]
     # print(dfquery['query'])
 
     # construct term index, ind, ['token', 'id', 'count', 'time']
     # and session-time index
+    i = 0
     for index, row in df.iterrows():
         term = row['query'].split()[0]
         if ind['token'].str.contains('term').all() == 0:

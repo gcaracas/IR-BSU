@@ -66,5 +66,5 @@ if __name__ == '__main__':
     # for x in list(s.keys()):
     #     print(s)
     # tok1 = s['firsts']
-    # app.run(debug = True)
-    app.run(host="18.218.1.8", port=80)
+    app.run(debug = True)
+    # app.run(host="18.218.1.8", port=80)

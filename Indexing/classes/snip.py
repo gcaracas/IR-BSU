@@ -119,6 +119,7 @@ class snip:
             if cosine_sim > cos_score:
                 cos_score = cosine_sim
                 snippet.append(s)
+                # snippet.append("\n" + str(cosine_sim))
         return snippet
 
 

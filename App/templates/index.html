@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Auto complete using Pure Javascript</title>
+    <title>IR-BSU Search Engine</title>
     <link href="https://fonts.googleapis.com/css?family=Cambay&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/styles.css">
     <!-- <script type="text/javascript" src="../scripts/require.js"></script> -->
     <!-- <script src="../static/querysugg.js"></script> -->
     <script src="{{url_for('static', filename='querysugg.js')}}"></script>
-    <script src="{{url_for('static', filename='require.js')}}"></script>
+<!--    <script src="{{url_for('static', filename='require.js')}}"></script>-->
     <!-- <script type="text/javascript" src="../queryLog.json"></script> -->
 </head>
 <header>
@@ -31,6 +32,7 @@
   <h3>Document Title: {{ result.title }}</h3>
   <h4>{{ result.snippet }}</h4>
 </div>
+
 {% endfor %}
 {{ forward_message }}
 </body>

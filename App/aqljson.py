@@ -1,22 +1,24 @@
 #!/usr/bin/env python
-
 # coding: utf8
 import csv
+import Queue
+import json
+import multiprocessing
+import time
 
-with open('aql.txt', 'r') as in_file:
-    stripped = (line.strip() for line in in_file)
-    lines = (line.split("\t") for line in stripped if line)
-    with open('aql.csv', 'w') as out_file:
-        writer = csv.writer(out_file)
-        writer.writerow(('id', 'query', 'time'))
-        writer.writerows(lines)
+def toCsv():
+    with open('aql.txt', 'r') as in_file:
+        stripped = (line.strip() for line in in_file)
+        lines = (line.split("\t") for line in stripped if line)
+        with open('aql.csv', 'w') as out_file:
+            writer = csv.writer(out_file)
+            writer.writerow(('id', 'query', 'time'))
+            writer.writerows(lines)
 # import pandas as pd
 # df = pd.read_fwf('aql.txt')
 # df.to_csv('aql.csv')
 
-# import json
-#
-#
+
 # aql1 = []
 # with open("AQL/Clean-Data-01.txt") as f:
 #     for line in f:

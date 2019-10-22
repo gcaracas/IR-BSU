@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IR-BSU Search Engine</title>
+    <link href="https://fonts.googleapis.com/css?family=Cambay&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/styles.css">
+    <!-- <script type="text/javascript" src="../scripts/require.js"></script> -->
+    <!-- <script src="../static/querysugg.js"></script> -->
+    <script src="{{url_for('static', filename='querysugg.js')}}"></script>
+<!--    <script src="{{url_for('static', filename='require.js')}}"></script>-->
+    <!-- <script type="text/javascript" src="../queryLog.json"></script> -->
+</head>
+<header>
+  <div>
+  <form autocomplete="off" method="POST">
+  <div class="autocomplete" style="width:300px;">
+    <label>Enter Query:</label>
+    <input id="myInput" type="text" name="query" placeholder="Type...">
+  </div>
+  <input type="submit" value="Search">
+  <!-- <input type="button" id="next" value="Search" /> -->
+  </form>
+</div>
+</header>
+<body>
+<hr>
+<h2>Results for the query: {{ query }}</h2>
+{% for result in results %}
+<div class="results">
+  <h3>Document Title: {{ result.title }}</h3>
+  <h4>{{ result.snippet }}</h4>
+</div>
+
+{% endfor %}
+{{ forward_message }}
+</body>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(document).keydown(function(e) {
+      if (e.keyCode == '32') {
+        var searchbox = document.getElementById('myInput');
+        var search = searchbox.value;
+        var qs = searchjs(search);
+      }
+    });
+  });
+
+  function Get(yourUrl){
+  var Httpreq = new XMLHttpRequest(); // a new request
+  Httpreq.open("GET",yourUrl,false);
+  Httpreq.send(null);
+  return Httpreq.responseText;
+  }
+</script>
+</html>

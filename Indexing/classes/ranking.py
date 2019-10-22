@@ -61,7 +61,7 @@ class ranking:
         return num_docs
     
    
-    def relevance_ranking(self, query='', num_results=5, index=[], resources=[], max_freq=[], N=0, term_doc_matrix=[], weigh=False, query_weighing=False):
+    def relevance_ranking(self, query='', num_results=5, index=[], resources=[], max_freq=[], N=0, term_doc_matrix=[], weigh=False, query_weighing=False, CR={}):
         """
         Calculate relevance ranking
         :param query: String containing the query, this is a single string and it is not tokenize
@@ -78,29 +78,41 @@ class ranking:
 
         if weigh: resources=q
             
+        # print("resources still?", resources)
         # We will iterate through all the documents in the resources list
         for id, val in enumerate(resources):
             TF=0
             IDF=0
+
+            # WORKS: print(id, max_freq[id])
             #Iterate through query tokens
 #             print('Id = ', id, '-->', val)
             for w in q:
                 if w not in index:
                     print('Term {} not found in index'.format(w))
                     continue
-                if not query_weighing: freq = self.get_term_frequency(entries=index[w], doc_id=id)
-                else: freq = query.count(w)
+                if query_weighing: 
+                    freq = query.count(w) 
+                else: 
+                    doc = CR[val]#self.get_term_frequency(entries=index[w], doc_id=id)
+                    freq = [token[1] for token in doc if token[0] == w][0]
+                    print('freq of *', w, '*:', freq)
                 
                 max_d = max_freq[id] #For base 0 reason
+                # print('max in doc', max_d)
                 # Now calculate TF
                 if max_d==0: TF=0
                 else: TF=TF+freq/max_d
+                print(TF, freq, max_d)
                 # Now calculate IDF
                 n_w=self.n_w(term_doc_matrix=term_doc_matrix, term=w)
                 IDF = IDF+math.log2(N/n_w)
             # Now let's join the TF-IDF
             results[id] = TF*IDF
+            print(TF, IDF)
         sorted_result = sorted(results.items(), key=operator.itemgetter(1), reverse = True)
+        # for key in sorted_result.keys():
+        #     print('key: '+str(key) + ':    ' + str(sorted_result[key]))
         return sorted_result[:num_results]
 
     def get_max_frequencies(self, index={}, sentence_tokens=[]):

@@ -34,7 +34,7 @@ class match:
 
         for token in CR:
             for val in CR[token]:
-                match = ('match: ' + str(token), val.frequency)
+                match = (str(token), val.frequency)
                 doc_first[val.docId].append(match)
         return {k: doc_first[k] for k in doc_first if len(doc_first[k]) > 0}
     

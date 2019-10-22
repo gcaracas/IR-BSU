@@ -84,8 +84,8 @@ class snip:
                             query_weighing=True)   
         q_w=[w[1] for w in sorted(q_weights, key=lambda x: x[0])]
             
-        print('num results for q_weights', query)
-        print('query weights generated', q_w)
+       # print('num results for q_weights', query)
+       # print('query weights generated', q_w)
         cos_score = -1.0
         
         # save only the 2 closest sentences
@@ -113,13 +113,12 @@ class snip:
             #print('doc weights generated', ordered_s_weights)
             cosine_sim = self.cos_similarity(ordered_s_weights, q_w)
 
-            print('cosine score', cosine_sim)
+           # print('cosine score', cosine_sim)
 
             #print('cosine similarity calculated', cosine_sim)
             if cosine_sim > cos_score:
                 cos_score = cosine_sim
                 snippet.append(s)
-                # snippet.append("\n" + str(cosine_sim))
         return snippet
 
 

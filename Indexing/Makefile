@@ -36,7 +36,7 @@ activate_venv: requirements.txt
 	touch venv/bin/activate
 
 run: deps
-	source venv/bin/activate ; python Indexing.py
+	source venv/bin/activate ; python application.py
 
 rel: deps
 	source venv/bin/activate ; python relevance_ranking.py

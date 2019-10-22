@@ -6,9 +6,8 @@ import shelve
 import pandas as pd
 import pickle
 import qlindex
-sys.path.append("../Indexing")
 from search import search
-sys.path.append("../Indexing/classes")
+sys.path.append("classes")
 from load_index import load_index_in_memory
 # sys.path.insert(0, '/Users/jason.smith/Documents/GitHub/IR-BSU/App')
 import nltk

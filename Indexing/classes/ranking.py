@@ -1,6 +1,8 @@
 from collections import Counter
 import math
 import logging
+import sys
+sys.path.append("classes")
 from classes.preprocessing import preprocessing
 import operator
 from classes.inverted_index import *

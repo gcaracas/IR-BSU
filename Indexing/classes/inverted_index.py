@@ -2,7 +2,8 @@ import numpy as np
 import logging
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-
+import sys
+sys.path.append("classes")
 from classes.preprocessing import preprocessing
 
 class Appearance:

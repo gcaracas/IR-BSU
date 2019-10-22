@@ -1,7 +1,7 @@
 import logging
 import sys
 #sys.path.insert(0, '/Users/jason.smith/Documents/GitHub/IR-BSU/Indexing/classes')
-sys.path.append("../Indexing/classes")
+sys.path.append("classes")
 from ranking import ranking
 from preprocessing import preprocessing
 from snip import snip

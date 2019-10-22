@@ -11,7 +11,7 @@ import sys
 # assumes application.py was the caller,
 # therefore the path.appends start at
 # the /App level.
-sys.path.append("../Indexing/classes")
+sys.path.append("classes")
 from utilities import doc_utilities
 from persist_index_memory import persist_index_memory
 from inverted_index import inverted_index

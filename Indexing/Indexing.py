@@ -14,8 +14,7 @@ def main():
     logger.info('Executing indexing module')
     logger.info('Reading file')
     u = doc_utilities()
-    u.read_data_set(file='data/wikipedia_text_files.csv', docs=12700)
-    #u.read_data_set(file='data/wikipedia_text_files.csv', docs=120)
+    u.read_data_set(file='data/wikipedia_text_files.csv', docs=100)
     logger.info('Task1 - Number of documents = {}'.format(u.get_number_documents()))
 
     # Instantiate our presistent object
@@ -41,7 +40,8 @@ def main():
 
     # Now let's create our index
     i_i.create_index(collection=u.get_collection_json(),
-                     preprocessing_text=False)
+                     preprocessing_text=False,
+                     max_tokens=4)
     logger.info('Index size = {}'.format(i_i.get_index_size()))
 
     r=i_i.lookup_query('man')

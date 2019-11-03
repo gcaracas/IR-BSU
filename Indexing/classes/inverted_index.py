@@ -44,7 +44,7 @@ class inverted_index:
         """
         return str(self.index)
 
-    def index_document(self, document='', process_text=True):
+    def index_document(self, document='', process_text=True, max_tokens=0):
         """
         Process a given document, save it to the DB and update the index.
         """
@@ -68,15 +68,29 @@ class inverted_index:
 
         appearances_dict = dict()
         # Dictionary with each term and the frequency it appears in the text.
+        current_tokens = len(self.index.keys())
+        print("Num tokens = ", current_tokens)
         for term in tokens:
             term_frequency = appearances_dict[term].frequency if term in appearances_dict else 0
             appearances_dict[term] = Appearance(document['id'], term_frequency + 1)
-
+        update_dict={}
+        for (key, appearance) in appearances_dict.items():
+            current_tokens = current_tokens + 1
+            if key not in self.index:
+                if current_tokens >= max_tokens:
+                    continue
+                update_dict[key] = [appearance]
+            else:
+                update_dict[key] = self.index[key]+[appearance]
         # Update the inverted index
-        update_dict = {key: [appearance]
-        if key not in self.index
-        else self.index[key] + [appearance]
-                       for (key, appearance) in appearances_dict.items()}
+        # if key not in self.index
+        # else self.index[key] + [appearance]
+        #               for (key, appearance) in appearances_dict.items()}
+        #update_dict = {key: [appearance]
+        #if key not in self.index
+        #else self.index[key] + [appearance]
+        #               for (key, appearance) in appearances_dict.items()}
+
         self.index.update(update_dict)
         # Add the document into the database
         self.storage.add(document)
@@ -183,11 +197,12 @@ class inverted_index:
             print(row)
 
     def create_index(self, collection=[],
-                     process_text=False):
+                     process_text=False, max_tokens=0):
         self.logger.debug('Collection length = {}'.format(len(collection)))
         for i, doc in tqdm(enumerate(collection)):
             self.index_document(document=doc,
-                               process_text=process_text)
+                               process_text=process_text,
+                                max_tokens=max_tokens)
 
     def visualize_freq(self):
         plt.figure(figsize=(6, 4), dpi=70)

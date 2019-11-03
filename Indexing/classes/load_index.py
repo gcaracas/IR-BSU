@@ -29,7 +29,7 @@ class load_index_in_memory:
         # Reading collection
         self.logger.info('[Load index 2/8] Reading document')
         u = doc_utilities()
-        u.read_data_set(file='../Indexing/data/12000_docs.p')
+        u.read_data_set(file='../Indexing/data/wikipedia_text_files.csv', docs=100000)
 
         # Create memory unit that will hold
         # the full collection
@@ -45,7 +45,8 @@ class load_index_in_memory:
         i_i = inverted_index(memory_unit)
         self.logger.info('[Load index 6/8] Creating main index')
         i_i.create_index(collection=u.get_collection_json(),
-                     process_text=True)
+                        process_text=True,
+                        max_tokens=100000)
         self.logger.info('[Load index 7/8] Creating term-document matrix')
         i_i.create_term_document_matrix()
         self.logger.info('[Load index 8/8] Preloading index done')

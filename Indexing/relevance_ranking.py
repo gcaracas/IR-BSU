@@ -8,7 +8,6 @@ from classes.snip import snip
 from classes.match import match
 import nltk
 
-
 logging.basicConfig(level=logging.DEBUG, format='%(filename)s %(levelname)s: %(asctime)s: %(message)s')
 logger = logging.getLogger('main')
 logger.info('Executing indexing module')
@@ -22,26 +21,27 @@ u.process_documents_for_indexing()
 i_i = inverted_index(memory_unit)
 
 # CREATE INDEX FROM DATASET
+
 i_i.create_index(collection=u.get_collection_json(),
-                     process_text=True)
+                     process_text=True, 
+                     max_tokens=100000)
 i_i.create_term_document_matrix()
 
 # GIVEN QUERY FROM FRONT-END, FIND RELEVANT RESULTS
-query = 'When is shark week?' # user input
-print('input:',query)
+query = 'duck tales' # user input
+print('\n**************\ninput:',query)
+
 matcher = match()
 q = preprocessing().the_works(query)
+print('\n*******what have you done to my beautiful query?\n', q)
 CR = i_i.lookup_query(q)
-CR = matcher.boolean(CR)
-# added in case not every token matches
-doctoken_matchnums =[len(i) for i in CR.values()]
-scaler = max(doctoken_matchnums)
-CR = matcher.scale(CR,scaler)
+
+resources = matcher.boolean(CR)
+print("after matching", resources)
 
 # RANK RELEVANT RESULTS
 r_ranking = ranking()
-resources = list(CR.keys())
-max_freq = r_ranking.get_max_frequencies(index=CR) # , num_docs=len(i_i.storage.index)
+max_freq = r_ranking.get_max_frequencies(index=i_i.index) # sentence_tokens=q, num_docs=len(i_i.storage.index)
 # Now save this into the persisted memory object within the index
 i_i.storage.max_frequency_terms_per_doc = max_freq
 res = r_ranking.relevance_ranking(query = query,
@@ -52,8 +52,9 @@ res = r_ranking.relevance_ranking(query = query,
                             N=len(i_i.storage.index),
                             term_doc_matrix=i_i.doc_term_matrix_all)
 
+print(res)
 # GENERATE RANKED JSON_SNIPPETS FOR FRONT-END
-snipper = snip(r_ranking)
+snipper = snip()
 json = snipper.get_snippets(res, resources=resources, query=query, i_i=i_i)
 
 print('output:',json)

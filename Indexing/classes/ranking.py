@@ -28,7 +28,7 @@ class ranking:
         for elem in entries:
             if int(elem.docId) == doc_id:
                 # Return immediately, this is an expensive operation.
-                return elem.frequency
+                return elem.content_frequency
         # Term not in that document
         return 0
 
@@ -63,7 +63,7 @@ class ranking:
         return num_docs
     
    
-    def relevance_ranking(self, query='', num_results=5, index=[], resources=[], max_freq=[], N=0, term_doc_matrix=[], weigh=False, query_weighing=False):
+    def relevance_ranking(self, query='', num_results=5, index=[], resources=[], max_freq=[], N=0, term_doc_matrix=[]):
         """
         Calculate relevance ranking
         :param query: String containing the query, this is a single string and it is not tokenize
@@ -71,14 +71,10 @@ class ranking:
         :param resources: Array of document id's that will be processed
         :return: Array of ranked documents.
         """
-       # logging.info("Performing ranking, query = {}, results = {}".format(query, num_results))
-
         # Now we will preprocess and tokenize our query.
         p=self.preproc
         q=p.the_works(text=query)
         results={}
-
-        if weigh: resources=q
             
         # We will iterate through all the documents in the resources list
         for id, val in enumerate(resources):
@@ -90,12 +86,14 @@ class ranking:
                 if w not in index:
                     print('Term {} not found in index'.format(w))
                     continue
-                if not query_weighing: freq = self.get_term_frequency(entries=index[w], doc_id=id)
-                else: freq = query.count(w)
+                else: freq = self.get_term_frequency(entries=index[w], doc_id=id)
+
                 
+                # print(max_freq)
+
                 max_d = max_freq[id] #For base 0 reason
                 # Now calculate TF
-                if max_d==0: TF=0
+                if max_d==0: TF=1
                 else: TF=TF+freq/max_d
                 # Now calculate IDF
                 n_w=self.n_w(term_doc_matrix=term_doc_matrix, term=w)
@@ -105,7 +103,7 @@ class ranking:
         sorted_result = sorted(results.items(), key=operator.itemgetter(1), reverse = True)
         return sorted_result[:num_results]
 
-    def get_max_frequencies(self, index={}, sentence_tokens=[]):
+    def get_max_frequencies(self, index={}, sentence_tokens=[]): #
         """
         Calculates the maximum frequency of any term in all documents, so we
         can use it in ranking.
@@ -114,30 +112,30 @@ class ranking:
         :return: array from 1..n where n is num of documents, with the highest
         term frequency.
         """
-        
+
         if len(sentence_tokens) == 0:
             max_freq=[]
             for docId, matches in tqdm(index.items()):
                 tmp_freq = 0
                 for token in matches:
-                    frequency = token[1]
+                    frequency = token.content_frequency
                     if frequency > tmp_freq:
                         tmp_freq = frequency
                 max_freq.append(tmp_freq)
-        else: 
-            max_freq=[]
-#             for sentence in sentences:
-            # sentence_freqs
-            for token in sentence_tokens:
-                max_frequency = 0
-                if token not in index:
-                    print('Term {} not found in index'.format(token))
-                    max_freq.append(max_frequency)
-                    continue
-                for a in index[token]:
-                    if a.frequency > max_frequency:
-                        max_frequency = a.frequency
-                max_freq.append(max_frequency)
+#         else: 
+#             max_freq=[]
+# #             for sentence in sentences:
+#             # sentence_freqs
+#             for token in sentence_tokens:
+#                 max_frequency = 0
+#                 if token not in index:
+#                     print('Term {} not found in index'.format(token))
+#                     max_freq.append(max_frequency)
+#                     continue
+#                 for a in results_dict[token]:
+#                     if a.content_frequency > max_frequency:
+#                         max_frequency = a.content_frequency
+#                 max_freq.append(max_frequency)
                 #sentence_freqs.append(max_frequency)
             # max_freq.append(sentence_freqs)
                 

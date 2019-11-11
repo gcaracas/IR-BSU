@@ -12,9 +12,11 @@ class Appearance:
     frequency of appearances in the same one.
     """
 
-    def __init__(self, docId, frequency):
+    # DAVID: added title frequency as a separate count
+    def __init__(self, docId, content_frequency, title_frequency):
         self.docId = docId
-        self.frequency = frequency
+        self.content_frequency = content_frequency
+        self.title_frequency = title_frequency
 
 
     def __repr__(self):
@@ -49,31 +51,48 @@ class inverted_index:
         Process a given document, save it to the DB and update the index.
         """
         # Remove punctuation from the text.
+        # DAVID: added 'title' info
         text = document['content']
+        title = document['title']  
+
         if process_text:
             text = self.preprocessing.remove_punctuation(text=text)
+            # title = self.preprocessing.remove_punctuation(text=title)
 
+        title = title.split('_')
+        for t in title:
+            t = self.preprocessing.remove_punctuation(text=t)
+            
         # Tokenize
         tokens = self.preprocessing.tokenize(text=text)
-
         if process_text:
             # Remove stop words
             tokens = self.preprocessing.remove_stopwords(tokens=tokens)
-
+            title_tokens = self.preprocessing.remove_stopwords(tokens=title)
             # Remove capitalization
             tokens = self.preprocessing.remove_capitalization(tokens=tokens)
-
+            title_tokens =  self.preprocessing.remove_capitalization(tokens=title_tokens)
             # Stem terms
             tokens = self.preprocessing.stem(tokens=tokens)
+            title_tokens = self.preprocessing.stem(tokens=title_tokens)
 
         appearances_dict = dict()
         # Dictionary with each term and the frequency it appears in the text.
         current_tokens = len(self.index.keys())
-        print("Num tokens = ", current_tokens)
+        # print("Num tokens = ", current_tokens)
         for term in tokens:
-            term_frequency = appearances_dict[term].frequency if term in appearances_dict else 0
-            appearances_dict[term] = Appearance(document['id'], term_frequency + 1)
+            content_frequency = appearances_dict[term].content_frequency if term in appearances_dict else 0
+            title_frequency = appearances_dict[term].title_frequency if term in appearances_dict else 0
+            appearances_dict[term] = Appearance(document['id'], content_frequency + 1, title_frequency)
         update_dict={}
+
+        # DAVID: and now for title matches...
+        for term in title_tokens:
+            content_frequency = appearances_dict[term].content_frequency if term in appearances_dict else 0
+            title_frequency = appearances_dict[term].title_frequency if term in appearances_dict else 0
+            appearances_dict[term] = Appearance(document['id'], content_frequency, title_frequency + 1)
+        update_dict={}
+
         for (key, appearance) in appearances_dict.items():
             current_tokens = current_tokens + 1
             if key not in self.index:
@@ -82,6 +101,7 @@ class inverted_index:
                 update_dict[key] = [appearance]
             else:
                 update_dict[key] = self.index[key]+[appearance]
+
         # Update the inverted index
         # if key not in self.index
         # else self.index[key] + [appearance]
@@ -109,7 +129,7 @@ class inverted_index:
             docs_str = (str(d) for d in docs)
             docs_flat_list=','.join(docs_str)
 
-            freq = [a.frequency for a in self.index[word]]
+            freq = [a.content_frequency for a in self.index[word]]
             freq_str = (str(d) for d in freq)
             freq_flat_list = ','.join(freq_str)
             print("{: >10} {: >10} {: >10} {: >10}".format(id,word,docs_flat_list, freq_flat_list))
@@ -127,6 +147,11 @@ class inverted_index:
         stemmed_tokens=[]
         for id, document in relevant_results.items():
             text = self.preprocessing.remove_punctuation(text=document['content'])
+
+            # DAVID: added titles to stem_tokens
+            titles = self.preprocessing.remove_punctuation(text=document['title'])
+            text.extend(titles)
+
             tokens = self.preprocessing.tokenize(text=text)
             tokens = self.preprocessing.remove_stopwords(tokens=tokens)
             tokens = self.preprocessing.remove_capitalization(tokens=tokens)
@@ -160,6 +185,30 @@ class inverted_index:
                     term_doc_matrix[full_stem] = 1
                 else:
                     term_doc_matrix[full_stem] = 0
+
+            # DAVID: saved at each index is a tuple:
+            # (content_matches, title_matches)
+            titles = self.preprocessing.remove_punctuation(text=document['title'])
+            title_tokens = self.preprocessing.tokenize(text=titles)
+            title_tokens = self.preprocessing.remove_stopwords(tokens=title_tokens)
+            title_tokens = self.preprocessing.remove_capitalization(tokens=title_tokens)
+            title_stems = self.preprocessing.stem(tokens=title_tokens)
+            for full_stem in stem_tokens:
+                found_title = False
+                for title_stemmed_token in title_stems:
+                    if full_stem == title_stems:
+                        found_title = True
+                if found_title == True:
+                    text_matches = term_doc_matrix[full_stem]
+                    title_match = 1
+                    both_matches = (text_matches, title_match)
+                    term_doc_matrix[full_stem] = both_matches
+                else:
+                    text_matches = term_doc_matrix[full_stem]
+                    title_match = 0
+                    both_matches = (text_matches, title_match)
+                    term_doc_matrix[full_stem] = both_matches
+
             self.doc_term_matrix_all.append(term_doc_matrix)
 
     def print_term_document_matrix(self):

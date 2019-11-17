@@ -44,8 +44,8 @@ class snip:
         :return: 
         """
         q_in_s = []
-        print(document)
-        print(query)
+        # print(document)
+        # print(query)
 
         proc_sents = []
         for s in document:
@@ -57,7 +57,7 @@ class snip:
                     counter = s.count(q)
             q_in_s.append(counter)
         
-        print(q_in_s)
+        # print(q_in_s)
         max_q_count = 0
         second_max_count = 0
         

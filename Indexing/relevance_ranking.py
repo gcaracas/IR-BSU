@@ -52,7 +52,7 @@ res = r_ranking.relevance_ranking(query = query,
                             N=len(i_i.storage.index),
                             term_doc_matrix=i_i.doc_term_matrix_all)
 
-print(res)
+#print(res)
 # GENERATE RANKED JSON_SNIPPETS FOR FRONT-END
 snipper = snip()
 json = snipper.get_snippets(res, resources=resources, query=query, i_i=i_i)

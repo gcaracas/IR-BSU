@@ -13,11 +13,11 @@ class Appearance:
     """
 
     # DAVID: added title frequency as a separate count
-    def __init__(self, docId, content_frequency, title_frequency):
+    def __init__(self, docId, content_frequency, title_frequency, doc_length):
         self.docId = docId
         self.content_frequency = content_frequency
         self.title_frequency = title_frequency
-
+        self.doc_length = doc_length # normalize tf in match.py
 
     def __repr__(self):
         """
@@ -57,18 +57,20 @@ class inverted_index:
 
         if process_text:
             text = self.preprocessing.remove_punctuation(text=text)
-            # title = self.preprocessing.remove_punctuation(text=title)
 
         title = title.split('_')
+        title_tokens = []
         for t in title:
             t = self.preprocessing.remove_punctuation(text=t)
+            title_tokens.append(t)
             
         # Tokenize
+ 
         tokens = self.preprocessing.tokenize(text=text)
         if process_text:
             # Remove stop words
             tokens = self.preprocessing.remove_stopwords(tokens=tokens)
-            title_tokens = self.preprocessing.remove_stopwords(tokens=title)
+            title_tokens = self.preprocessing.remove_stopwords(tokens=title_tokens)
             # Remove capitalization
             tokens = self.preprocessing.remove_capitalization(tokens=tokens)
             title_tokens =  self.preprocessing.remove_capitalization(tokens=title_tokens)
@@ -79,18 +81,20 @@ class inverted_index:
         appearances_dict = dict()
         # Dictionary with each term and the frequency it appears in the text.
         current_tokens = len(self.index.keys())
-        # print("Num tokens = ", current_tokens)
+
+        total_doc_tokens = len(tokens) # use this to normalize tf in match.py
+
         for term in tokens:
             content_frequency = appearances_dict[term].content_frequency if term in appearances_dict else 0
             title_frequency = appearances_dict[term].title_frequency if term in appearances_dict else 0
-            appearances_dict[term] = Appearance(document['id'], content_frequency + 1, title_frequency)
+            appearances_dict[term] = Appearance(document['id'], content_frequency + 1, title_frequency, total_doc_tokens)
         update_dict={}
 
         # DAVID: and now for title matches...
         for term in title_tokens:
             content_frequency = appearances_dict[term].content_frequency if term in appearances_dict else 0
             title_frequency = appearances_dict[term].title_frequency if term in appearances_dict else 0
-            appearances_dict[term] = Appearance(document['id'], content_frequency, title_frequency + 1)
+            appearances_dict[term] = Appearance(document['id'], content_frequency, title_frequency + 1, total_doc_tokens)
         update_dict={}
 
         for (key, appearance) in appearances_dict.items():
@@ -101,15 +105,6 @@ class inverted_index:
                 update_dict[key] = [appearance]
             else:
                 update_dict[key] = self.index[key]+[appearance]
-
-        # Update the inverted index
-        # if key not in self.index
-        # else self.index[key] + [appearance]
-        #               for (key, appearance) in appearances_dict.items()}
-        #update_dict = {key: [appearance]
-        #if key not in self.index
-        #else self.index[key] + [appearance]
-        #               for (key, appearance) in appearances_dict.items()}
 
         self.index.update(update_dict)
         # Add the document into the database

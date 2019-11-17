@@ -1,0 +1,35 @@
+output: [{
+
+'title': "2017â\x80\x9318 Oregon Ducks women's basketball team", 
+'snippet': 'The 2017â\x80\x9318 Oregon Ducks women\'s basketball team represents the University of Oregon during the 2017â\x80\x9318 NCAA Division I women\'s basketball season....!colspan=9 style="background:#004F27; color:yellow;"| Exhibition\n!colspan=9 style="background:#004F27; color:yellow;"| Non-conference regular season !colspan=9 style="background:#004F27; color:yellow;"| Pac-12 regular season !colspan=9 style="background:#004F27;"| Pac-12 Women\'s Tournament 2017â\x80\x9318 NCAA Division I women\'s basketball rankings'}, {
+
+'title': 'Five Little Ducks', 
+'snippet': 'Mother duck said, "quack quack quack quack,"\nAnd only four little ducks came back....Five Little Ducks is a nursery rhyme and counting-out game.'}, {
+
+'title': 'Duck Duck Goose (song)', 
+'snippet': '"Duck Duck Goose" is the third single by independent American rapper Cupcakke from her third studio album "Ephorize"...."Spin" commented that "the video is lightly pornographic and very playful."'}, {
+
+'title': 'List of Wallace and Gromit characters', 
+'snippet': 'In series two there are two ducks; in series three, they have once again been replaced with a single, pure white duck....Two of the "disasters" he mentions are The Great Slug Riot of \'32, "when there were slugs the size of pigs", and the Great Duck Plague of \'53.'}, {
+
+'title': 'Ephorize', 
+'snippet': '"Duck Duck Goose" has been described as a sex rap song that "flirts with New Orleans bounce"....He also statedÂ\xa0that "at her best, CupcakKe is a semi-automatic fully loaded with ridiculous puns."'}]
+
+________________________________________-
+
+output: [{
+'title': "2017â\x80\x9318 Oregon Ducks women's basketball team", 
+'snippet': 'The 2017â\x80\x9318 Oregon Ducks women\'s basketball team represents the University of Oregon during the 2017â\x80\x9318 NCAA Division I women\'s basketball season....!colspan=9 style="background:#004F27; color:yellow;"| Exhibition\n!colspan=9 style="background:#004F27; color:yellow;"| Non-conference regular season !colspan=9 style="background:#004F27; color:yellow;"| Pac-12 regular season !colspan=9 style="background:#004F27;"| Pac-12 Women\'s Tournament 2017â\x80\x9318 NCAA Division I women\'s basketball rankings'}, {
+
+'title': 'Five Little Ducks', 
+'snippet': 'Mother duck said, "quack quack quack quack,"\nAnd only four little ducks came back....Five Little Ducks is a nursery rhyme and counting-out game.'}, {
+
+'title': "Disney's Fairy Tale Weddings (TV series)", 
+'snippet': "Disney's Fairy Tale Weddings is a documentary television series featuring couples and their Disney-themed weddings, airing on Disney's Freeform network....The show provides a behind-the-scenes look at the weddings and engagements of three couples that take place at Disney destinations including Walt Disney World, Disneyland, and Disney Cruise Line and coordinated by Disney's Fairy Tale Weddings brand."}, {
+
+'title': 'Duck Duck Goose (song)', 
+'snippet': '"Duck Duck Goose" is the third single by independent American rapper Cupcakke from her third studio album "Ephorize"...."Spin" commented that "the video is lightly pornographic and very playful."'}, {
+
+'title': 'Freakshow Vol. 1: Tales of the Travelling Tunes', 
+'snippet': 'Freakshow Vol 1: Tales of the Travelling Tunes is the fourth studio album from the Malaysian rock band Pop Shuvit, released in 2007 by their own record label, Shuvit Management....The song, "Marabahaya" used as the soundtrack of the Malaysian movie, "Impak Maksima".'}]
+

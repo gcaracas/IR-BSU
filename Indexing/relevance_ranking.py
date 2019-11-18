@@ -28,7 +28,7 @@ i_i.create_index(collection=u.get_collection_json(),
 i_i.create_term_document_matrix()
 
 # GIVEN QUERY FROM FRONT-END, FIND RELEVANT RESULTS
-query = 'duck tales' # user input
+query = 'universe university' # user input
 print('\n**************\ninput:',query)
 
 matcher = match()

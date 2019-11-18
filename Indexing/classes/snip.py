@@ -73,9 +73,17 @@ class snip:
                 max_q_count = q_count
                 best_s_index = s_index
 
+
+
+
         snippet = str(document[best_s_index]) 
         snippet += "..." 
-        snippet += str(document[next_best_i])
+
+        if len(document)==1:
+            return snippet
+        else:
+            snippet += str(document[next_best_i])
+        
 
         return snippet
 

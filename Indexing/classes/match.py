@@ -50,7 +50,7 @@ class match:
         resources = []
         if scaler > 1:
             most_matching_terms = self.scale(matches, scaler)
-            list_most_matches = most_matching_terms.values()
+            list_most_matches = list(most_matching_terms.values())
             if len(list_most_matches) >= 5:
                 for i in range(5):
                     resources.append(list_most_matches[i])
@@ -71,6 +71,6 @@ class match:
         resources.extend(content_sum)
         print('all information', resources)
 
-        rsrcs = [i[1] for i in resources]
+        rsrcs = [i[1] for i in resources if type(i) is tuple]
 
         return rsrcs 
